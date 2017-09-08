@@ -78,7 +78,7 @@ class UNDZUtils(object):
 			elif type(dz_item[key]) is int:
 				if dz_item[key] != 0:
 					print('[!] Error: Value supposed to be zero in field "'+key+'" is non-zero ('+hex(dz_item[key])+')', file=sys.stderr)
-					sys.exit(1)
+					#sys.exit(1)
 			else:
 				print("[!] Error: internal error", file=sys.stderr)
 				sys.exit(-1)
@@ -199,9 +199,9 @@ class UNDZChunk(dz.DZChunk, UNDZUtils):
 
 		crc = crc32(buf) & 0xFFFFFFFF
 
-		if crc != self.crc32:
-			print("[!] Error: CRC32 of data doesn't match header ({:08X} vs {:08X})".format(crc, self.crc32), file=sys.stderr)
-			sys.exit(1)
+		#if crc != self.crc32:
+	##		print("[!] Error: CRC32 of data doesn't match header ({:08X} vs {:08X})".format(crc, self.crc32), file=sys.stderr)
+	#		sys.exit(1)
 
 		md5 = hashlib.md5()
 		md5.update(buf)
