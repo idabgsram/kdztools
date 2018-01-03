@@ -196,7 +196,7 @@ class UNDZChunk(dz.DZChunk, UNDZUtils):
 
 		# Decompress the data
 		buf = zlib.decompress(zdata)
-
+    
 		crc = crc32(buf) & 0xFFFFFFFF
 
 		#if crc != self.crc32:
@@ -950,10 +950,10 @@ class DZFileTools:
 
 	def cmdExtractSlice(self, files):
 		if len(files) == 0:
-			print("[+] Extracting all slices^Wpartitions\n")
+			print("[+] Extracting all slices/partitions\n")
 			files = range(0, self.dz_file.getSlice(-1).getIndex()+1)
 		elif len(files) == 1:
-			print("[+] Extracting single slice^Wpartition!\n")
+			print("[+] Extracting single slice / partition!\n")
 		else:
 			print("[+] Extracting {:d} slices^Wpartitions!\n".format(len(files)))
 
