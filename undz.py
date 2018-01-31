@@ -169,8 +169,9 @@ class UNDZChunk(dz.DZChunk, UNDZUtils):
 		"""
 		Display information about our chunk
 		"""
+                
                 if cmd.batchMode:
-                    print(self.sliceName.decode("utf8"))
+                    print("{:d}:{:s}:data".format(sliceIdx,self.sliceName.decode("utf8")))
                 else:
 		    print("{:2d}/{:2d} : {:s} ({:d} bytes)".format(sliceIdx, selfIdx, self.chunkName.decode("utf8"), self.dataSize))
 		self.Messages()
@@ -379,7 +380,7 @@ class UNDZSlice(object):
 				chunkIdx = None
 				sliceIdx = -1
 			if cmd.batchMode:
-                            print("{:s}".format(self.name))
+                            print("{:2d}:{:s}:empty".format(sliceIdx,self.name))
                         else:
                             print("{:2d}/?? : {:s} (<empty>)".format(sliceIdx, self.name))
 		for chunk in self.chunks:
