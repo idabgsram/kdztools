@@ -169,7 +169,10 @@ class UNDZChunk(dz.DZChunk, UNDZUtils):
 		"""
 		Display information about our chunk
 		"""
-		print("{:2d}/{:2d} : {:s} ({:d} bytes)".format(sliceIdx, selfIdx, self.chunkName.decode("utf8"), self.dataSize))
+                if cmd.batchMode:
+                    print(self.sliceName.decode("utf8"))
+                else:
+		    print("{:2d}/{:2d} : {:s} ({:d} bytes)".format(sliceIdx, selfIdx, self.chunkName.decode("utf8"), self.dataSize))
 		self.Messages()
 		return ++selfIdx
 
@@ -375,9 +378,12 @@ class UNDZSlice(object):
 			if not self.index:
 				chunkIdx = None
 				sliceIdx = -1
-			print("{:2d}/?? : {:s} (<empty>)".format(sliceIdx, self.name))
+			if cmd.batchMode:
+                            print("{:s}".format(self.name))
+                        else:
+                            print("{:2d}/?? : {:s} (<empty>)".format(sliceIdx, self.name))
 		for chunk in self.chunks:
-			chunk.display(sliceIdx, chunkIdx)
+			chunk.display(sliceIdx,chunkIdx)
 			chunkIdx+=1
 		return chunkIdx
 
@@ -888,6 +894,7 @@ class DZFileTools:
 		# Parse arguments
 		parser = argparse.ArgumentParser(description='LG Compressed DZ File Extractor originally by IOMonster')
 		parser.add_argument('-f', '--file', help='DZ File to read', action='store', required=True, dest='dzfile')
+		parser.add_argument('-b', '--batch', help='batch mode', action='store_true', dest='batchMode')
 		group = parser.add_mutually_exclusive_group(required=True)
 		group.add_argument('-l', '--list', help='list slices/partitions', action='store_true', dest='listOnly')
 		group.add_argument('-x', '--extract', help='extract chunk-file(s) for reconstruction (all by default)', action='store_true', dest='extractChunkfile')
@@ -899,8 +906,9 @@ class DZFileTools:
 		return parser.parse_known_args()
 
 	def cmdListPartitions(self):
+            if not cmd.batchMode:
 		print("[+] DZ Partition List\n=========================================")
-		self.dz_file.display()
+	    self.dz_file.display()
 
 	def cmdExtractChunk(self, files):
 		if len(files) == 0:
@@ -991,6 +999,7 @@ class DZFileTools:
 		file.close()
 
 	def main(self):
+                global cmd
 		args = self.parseArgs()
 		cmd = args[0]
 		files = args[1]
