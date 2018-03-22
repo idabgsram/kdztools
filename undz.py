@@ -74,7 +74,7 @@ class UNDZUtils(object):
 				dz_item[key] = dz_item[key].rstrip(b'\x00')
 				if b'\x00' in dz_item[key]:
 					print("[!] Error: extraneous data found IN "+key, file=sys.stderr)
-					sys.exit(1)
+					#sys.exit(1)
 			elif type(dz_item[key]) is int:
 				if dz_item[key] != 0:
 					print('[!] Error: Value supposed to be zero in field "'+key+'" is non-zero ('+hex(dz_item[key])+')', file=sys.stderr)
@@ -86,7 +86,7 @@ class UNDZUtils(object):
 		# To my knowledge this is supposed to be blank (for now...)
 		if len(dz_item['pad']) != 0:
 			print("[!] Error: pad is not empty", file=sys.stderr)
-			sys.exit(1)
+			#sys.exit(1)
 
 
 		return dz_item
