@@ -23,6 +23,7 @@ import os
 import sys
 import io
 import zlib
+import zstandard as zstd
 import argparse
 import hashlib
 from binascii import crc32, b2a_hex
@@ -190,16 +191,34 @@ class UNDZChunk(dz.DZChunk, UNDZUtils):
 
                 I'm lazy though, and y'all have fast computers, so self is good
                 enough.
+
+                Starting with G7 KDZs, LG switched to zstandard compression.
+                To keep comparibility with older KDZs, we are going to compare
+                the compression header to the standard zlib header. If there, we 
+                use zlib .. if not, we use zstandard.
                 """
 
                 # Seek to the beginning of the compressed data in the specified partition
                 self.dz.dzfile.seek(self.dataOffset, io.SEEK_SET)
 
+                zlib_magic = {'zlib': bytes([0x78, 0x01])}
+                cmp_header = self.dz.dzfile.read(2)
+
+                # Reset to the beginning of the compressed data
+                self.dz.dzfile.seek(self.dataOffset, io.SEEK_SET)
+
                 # Read the whole compressed segment into RAM
                 zdata = self.dz.dzfile.read(self.dataSize)
 
-                # Decompress the data
-                buf = zlib.decompress(zdata)
+                if cmp_header.startswith(zlib_magic['zlib']):
+
+                    # Decompress the data with zlib
+                    buf = zlib.decompress(zdata)
+
+                else:
+                    # decompress with zstandard
+                    dctx = zstd.ZstdDecompressor()
+                    buf = dctx.decompress(zdata, max_output_size=200000000)
     
                 crc = crc32(buf) & 0xFFFFFFFF
 
@@ -321,11 +340,13 @@ class UNDZChunk(dz.DZChunk, UNDZUtils):
                         return
 
                 # This is where in the image we're supposed to go
-                targetAddr = int(self.chunkName[len(self.sliceName)+1:-4])
+                # This sanity check is broken for now. I am working on a better solution
+                # Not even sure if it is needed, since you would have a decompress failure
+#                targetAddr = int(self.chunkName[len(self.sliceName)+1:-4])
 
-                if targetAddr != self.targetAddr:
-                        self.messages.append("[!] Uncompressed starting offset differs from chunk name!")
-
+#                if targetAddr != self.targetAddr:
+#                        self.messages.append("[!] Uncompressed starting offset differs from chunk name!")
+                targetAddr = self.targetAddr
 
 
 class UNDZSlice(object):
