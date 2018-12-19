@@ -172,10 +172,13 @@ class DZFile(DZStruct):
 		('androidVer',	('10s',  True)),	# Android ver, optional
 #anti-rollback minimum date? absent from Lollipop, "122142720" on all other V10
 		('oldDateCode',	('10s',	 True)),	# prior firmware date?
-		('reserved5',	('I',    True)),	# currently always zero
+		('reserved5',	('I',    False)),	# currently always zero
 		('unknown4',	('I',    False)),	# sometimes 256?
-		('unknown5',	('Q',    False)),	# ???
-		('pad',		('164s', True)),	# currently always zero
+		('unknown5',	('I',    True)),	# ???
+		('unknown6',	('64s',  False)),	# ???
+		('unknown7',	('32s',  False)),	# ???
+		('unknown8',	('8s',   False)),	# ???
+		('pad',		('64s', True)),	# currently always zero
 	])
 
 	def __init__(self):
