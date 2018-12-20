@@ -174,7 +174,7 @@ class DZFile(DZStruct):
 		('oldDateCode',	('10s',	 True)),	# prior firmware date?
 		('reserved5',	('I',    False)),	# currently always zero
 		('unknown4',	('I',    False)),	# sometimes 256?
-		('unknown5',	('I',    True)),	# ???
+		('unknown5',	('I',    False)),	# ???
 		('unknown6',	('64s',  False)),	# ???
 		('unknown7',	('32s',  False)),	# ???
 		('unknown8',	('8s',   False)),	# ???
