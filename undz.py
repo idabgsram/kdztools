@@ -999,9 +999,16 @@ class DZFileTools:
 
                         cur = idx
                         slice = self.dz_file.getSlice(cur)
-                        while slice.getIndex() < idx:
+                        if slice.getIndex() != None:
+                            while slice.getIndex() < idx:
                                 cur += idx - slice.getIndex() if slice.getIndex() else 1
                                 slice = self.dz_file.getSlice(cur)
+                                if slice.getIndex() == None:
+                                    slice = self.dz_file.getSlice(idx)
+                        else:
+                            print("[*] Index = None")
+                            cur += 1
+                            slice = self.dz_file.getSlice(cur)
 
                         name = slice.getSliceName() + ".image"
                         file = io.FileIO(name, "wb")
