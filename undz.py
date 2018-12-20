@@ -402,7 +402,8 @@ class UNDZSlice(object):
                                 sliceIdx = -1
                         if cmd.batchMode:
                             print("{:2d}:{:s}:empty".format(sliceIdx,self.name))
-                        elif sliceIdx != -1:
+                            # elif sliceIdx != -1:
+                        else:
                             print("{:2d}/?? : {:s} (<empty>)".format(sliceIdx, self.name))
                 for chunk in self.chunks:
                         chunk.display(sliceIdx,chunkIdx)
@@ -644,8 +645,7 @@ class UNDZFile(dz.DZFile, UNDZUtils):
 
                         for i in range(len(g.slices)):
                                 if next != g.slices[i].startLBA:
-                                        new = UNDZSlice(self, None, "_unallocated_" + str(emptycount) + "_" + str((g.slices[i].startLBA - next)<<self.shiftLBA), next<<self.shiftLBA, (g.slices[i].startLBA-1)<<self.shiftLBA)
-                                        self.slices.insert(i+emptycount+1, new)
+                                        print("[!] Unallocated space found. Slice, Start, Size, End: " + str(next) + " " + str((g.slices[i].startLBA - next)<<self.shiftLBA), next<<self.shiftLBA, (g.slices[i].startLBA-1)<<self.shiftLBA)
                                         emptycount += 1
                                 next = g.slices[i].endLBA+1
 
@@ -1005,10 +1005,6 @@ class DZFileTools:
                                 slice = self.dz_file.getSlice(cur)
                                 if slice.getIndex() == None:
                                     slice = self.dz_file.getSlice(idx)
-                        else:
-                            print("[*] Index = None")
-                            cur += 2
-                            slice = self.dz_file.getSlice(cur)
 
                         name = slice.getSliceName() + ".image"
                         file = io.FileIO(name, "wb")
