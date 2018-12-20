@@ -1007,7 +1007,7 @@ class DZFileTools:
                                     slice = self.dz_file.getSlice(idx)
                         else:
                             print("[*] Index = None")
-                            cur += 1
+                            cur += 2
                             slice = self.dz_file.getSlice(cur)
 
                         name = slice.getSliceName() + ".image"
