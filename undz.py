@@ -402,7 +402,7 @@ class UNDZSlice(object):
                                 sliceIdx = -1
                         if cmd.batchMode:
                             print("{:2d}:{:s}:empty".format(sliceIdx,self.name))
-                        else:
+                        elif sliceIdx != -1:
                             print("{:2d}/?? : {:s} (<empty>)".format(sliceIdx, self.name))
                 for chunk in self.chunks:
                         chunk.display(sliceIdx,chunkIdx)
