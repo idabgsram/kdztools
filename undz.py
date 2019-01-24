@@ -74,8 +74,8 @@ class UNDZUtils(object):
                         if type(dz_item[key]) is str or type(dz_item[key]) is bytes:
                                 dz_item[key] = dz_item[key].rstrip(b'\x00')
                                 if b'\x00' in dz_item[key]:
-                                        print("[!] Error: extraneous data found IN "+key, file=sys.stderr)
-                                        sys.exit(1)
+                                        print("[!] Warning: extraneous data found IN "+key, file=sys.stderr)
+                                        #sys.exit(1)
                         elif type(dz_item[key]) is int:
                                 if dz_item[key] != 0:
                                         print('[!] Error: Value supposed to be zero in field "'+key+'" is non-zero ('+hex(dz_item[key])+')', file=sys.stderr)

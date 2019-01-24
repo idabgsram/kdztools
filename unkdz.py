@@ -70,8 +70,8 @@ class KDZFileTools(kdz.KDZFile):
 			if type(kdz_item[key]) is str or type(kdz_item[key]) is bytes:
 				kdz_item[key] = kdz_item[key].rstrip(b'\x00')
 				if b'\x00' in kdz_item[key]:
-					print("[!] Error: extraneous data found IN "+key, file=sys.stderr)
-					sys.exit(1)
+					print("[!] Warning: extraneous data found IN "+key, file=sys.stderr)
+					#sys.exit(1)
 			elif type(kdz_item[key]) is int:
 				if kdz_item[key] != 0:
 					print('[!] Error: field "'+key+'" is non-zero ('+b2a_hex(kdz_item[key])+')', file=sys.stderr)
