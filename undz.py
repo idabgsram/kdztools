@@ -86,8 +86,8 @@ class UNDZUtils(object):
 
                 # To my knowledge this is supposed to be blank (for now...)
                 if len(dz_item['pad']) != 0:
-                        print("[!] Error: pad is not empty", file=sys.stderr)
-                        sys.exit(1)
+                        print("[!] Warning: pad is not empty", file=sys.stderr)
+                        print("[!] pad contains: " + dz_item['pad'].decode(), file=sys.stderr)
 
 
                 return dz_item
